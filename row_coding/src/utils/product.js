@@ -1,0 +1,98 @@
+   export const products = [
+  {
+    id: 1,
+    title: "Gaming Mouse",
+    category: "gaming",
+    price: "$40",
+    description: "High speed gaming mouse with RGB light. Perfect for professional gamers with ergonomic design.",
+    images: [
+      "https://images.unsplash.com/photo-1527814050087-3793815479db?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1586816879360-004f5b0c51e3?q=80&w=1000&auto=format&fit=crop",
+    ],
+  },
+  {
+    id: 2,
+    title: "Gaming Headphone",
+    category: "gaming",
+    price: "$65",
+    description: "Premium gaming headphone with 7.1 surround sound and noise cancellation.",
+    images: [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1487215078519-e21cc028cb29?q=80&w=1000&auto=format&fit=crop",
+    ],
+  },
+  {
+    id: 3,
+    title: "Gaming Keyboard",
+    category: "gaming",
+    price: "$55",
+    description: "Mechanical gaming keyboard with customizable RGB lighting and macro keys.",
+    images: [
+      "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1587829741301-dc798b83add3?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?q=80&w=1000&auto=format&fit=crop",
+    ],
+  },
+  {
+    id: 4,
+    title: "Smart Watch",
+    category: "tech",
+    price: "$120",
+    description: "Modern smart watch with fitness tracking, heart rate monitor and GPS.",
+    images: [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1546868871-af0de0ae72be?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?q=80&w=1000&auto=format&fit=crop",
+    ],
+  },
+  {
+    id: 5,
+    title: "Wireless Earbuds",
+    category: "tech",
+    price: "$85",
+    description: "True wireless earbuds with active noise cancellation and 24hr battery life.",
+    images: [
+      "https://images.unsplash.com/photo-1590658268037-6bf12f032f55?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1598331668826-a5197a0d53b5?q=80&w=1000&auto=format&fit=crop",
+    ],
+  },
+  {
+    id: 6,
+    title: "Bluetooth Speaker",
+    category: "tech",
+    price: "$45",
+    description: "Portable bluetooth speaker with deep bass and waterproof design.",
+    images: [
+      "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1589003077984-894e133dabab?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1558089687-f282ffcbc126?q=80&w=1000&auto=format&fit=crop",
+    ],
+  },
+  {
+    id: 7,
+    title: "Gaming Chair",
+    category: "gaming",
+    price: "$299",
+    description: "Ergonomic gaming chair with lumbar support and adjustable armrests.",
+    images: [
+      "https://images.unsplash.com/photo-1598550476439-6847785fcea6?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1616628188502-413f017ce8c3?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=1000&auto=format&fit=crop",
+    ],
+  },
+  {
+    id: 8,
+    title: "Tablet",
+    category: "tech",
+    price: "$350",
+    description: "10.9 inch tablet with stunning display and powerful processor.",
+    images: [
+      "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1561154464-82e9adf32764?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1585790050230-5dd28404ccb7?q=80&w=1000&auto=format&fit=crop",
+    ],
+  },
+];

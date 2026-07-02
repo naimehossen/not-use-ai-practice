@@ -1,0 +1,133 @@
+// Express - ৫টা মেথড
+app.get()      // ডাটা নেওয়ার জন্য
+app.post()     // ডাটা জমা দেওয়ার জন্য
+app.put()      // ডাটা আপডেট করার জন্য
+app.delete()   // ডাটা ডিলিট করার জন্য
+app.use()      // মিডলওয়্যার ব্যবহারের জন্য
+
+// Mongoose - ৫টা মেথড
+Model.find()       // সব ডাটা পাওয়া
+Model.findOne()    // একটা ডাটা পাওয়া
+Model.create()     // ডাটা তৈরি করা
+Model.findByIdAndUpdate()  // ডাটা আপডেট করা
+Model.findByIdAndDelete()  // ডাটা ডিলিট করা
+
+// Bcrypt - ২টা মেথড
+bcrypt.hash()      // পাসওয়ার্ড লক করা
+bcrypt.compare()   // পাসওয়ার্ড মিলানো
+
+// JWT - ২টা মেথড
+jwt.sign()         // টোকেন তৈরি
+jwt.verify()       // টোকেন যাচাই
+
+// এটুকু জানলেই আপনি একটি পূর্ণাঙ্গ API বানাতে পারবেন!
+
+Level 1 (Completed): ✅ বেসিক ব্যাকএন্ড
+- Express.js
+- MongoDB + Mongoose
+- Authentication (JWT)
+- CRUD Operations
+
+Level 2 (Now you can learn):
+🔜 Advanced Topics:
+   - File Upload (Multer)
+   - Pagination
+   - Search & Filter
+   - Sorting
+   - Aggregation Pipeline
+   - WebSocket (Socket.io)
+   - Redis (Caching)
+   - Docker
+
+Level 3 (Future):
+🔜 Full Stack Projects:
+   - YouTube Clone
+   - E-commerce API
+   - Chat Application
+   - Social Media API
+
+
+   useState
+useEffect
+useContext
+useRef
+useReducer 
+ useMemo
+useCallback 
+ useLayoutEffect
+useInsertionEffect (rare) 
+ useTransition
+useDeferredValue 
+ useId 
+  useImperativeHandle
+useSyncExternalStore 
+ useFetch
+useAuth
+useForm
+useLocalStorage  
+
+১. Method   → কী করবি (GET/POST/PUT/DELETE)
+২. URL      → কোথায় পাঠাবি
+৩. Headers  → Token, Content-Type
+৪. Params   → URL-র সাথে ডাটা (?page=1)
+৫. Body     → মূল ডাটা (JSON/FormData)
+
+✅ Limit Selector
+✅ Go to Page
+✅ First/Last Buttons
+✅ Smart Page Numbers
+✅ Results Info (1-10 of 50)
+✅ Infinite Scroll
+✅ Loading Skeleton
+✅ Keyboard Navigation
+✅ URL Sync
+✅ Aggregation Pipeline
+
+📋 দ্রুত রেফারেন্স টেবিল (এক নজরে)
+মডেল	কাজ	ডাউনলোড সাইজ	কমান্ড/কোড
+DeepSeek-V3.1	কোডিং চ্যাট	4-5 GB (quantized)	ollama pull deepseek-v3.1
+faster-whisper	ভয়েস→টেক্সট	1.5 GB	pip install faster-whisper
+pyttsx3	টেক্সট→ভয়েস	5 MB	pip install pyttsx3
+rembg	BG রিমুভ	176 MB	pip install rembg
+moviepy	অডিও এক্সট্র্যাক্ট	10 MB	pip install moviepy
+LTX-2.3	ভিডিও জেনারেট	47 GB	git clone ...
+
+# আমার AI প্রোজেক্ট নোট
+
+## সেটআপ করা মডেল:
+- [ ] DeepSeek-V3.1 (চ্যাট) - Ollama
+- [ ] faster-whisper (STT) - pip
+- [ ] pyttsx3 (TTS) - pip  
+- [ ] rembg (Bg Remove) - pip
+- [ ] moviepy (Audio) - pip
+- [ ] LTX-2.3 (Video) - git clone
+
+## হার্ডওয়্যার চেকলিস্ট:
+- RAM: ___ GB
+- VRAM: ___ GB  
+- স্টোরেজ খালি: ___ GB
+
+## API পোর্ট:
+- চ্যাট API: localhost:11434
+- ভিডিও API: localhost:8080
+
+## ডেপ্লয় নোট:
+- VPS: _________
+- GPU ভাড়া: _________
+
+
+C++ Mastery          → Performance-critical যেকোনো Software!
+Computer Graphics    → Game Engine, AR/VR, Video Editor!
+Compiler Design      → Programming Language বানানো!
+OS Concepts          → Kernel, Driver, Embedded System!
+Network Programming  → HTTP Server, CDN, Protocol Design!
+Build Simple         → Problem Solving Mindset!
+Team + Years         → বড় কিছু বানানোর Real Experience!  
+
+Step 1: C++ Master (Core Language)
+Step 2: Computer Graphics (OpenGL/Vulkan)
+Step 3: Compiler Design (AST, Bytecode)
+Step 4: Operating System Concepts
+Step 5: Network Programming
+Step 6: Build Simple First!
+Step 7: Team + Years of Work!

@@ -1,0 +1,564 @@
+import React, { useState, useContext } from 'react';
+import { userContext } from '../context/UserContext';
+import axios from 'axios';
+
+// ✅ Google Login imports
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
+
+// ✅ Facebook Login import
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+
+const LoginPopup = ({ setShowLogin }) => {
+    const { url, setToken, token } = useContext(userContext);
+    const [currState, setCurrState] = useState("Login"); 
+    
+    const [data, setData] = useState({
+        name: "",
+        email: "",
+        password: ""
+    });
+
+    // ইনপুট হ্যান্ডলার
+    const onChangeHandler = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setData(data => ({ ...data, [name]: value }));
+    };
+
+    // ইমেইল-পাসওয়ার্ড লগইন ও রেজিস্ট্রেশন হ্যান্ডলার
+    const onLogin = async (event) => {
+        event.preventDefault();
+        let newUrl = url;
+
+        if (currState === "Login") {
+            newUrl += "/api/vpn/login"; 
+        } else {
+            newUrl += "/api/vpn/register";
+        }
+
+        try {
+            const response = await axios.post(newUrl, data);
+
+            if (response.data.success) {
+                setToken(response.data.token);
+                localStorage.setItem("token", response.data.token);
+                setShowLogin(false);
+                alert(`${currState} Successful!`);
+            } else {
+                alert(response.data.message);
+            }
+        } catch (error) {
+            console.log("Login Error:", error);
+            alert("Error connecting to server!");
+        }
+    };
+
+    // ✅ Facebook Login Handler
+    const responseFacebook = async (fbResponse) => {
+        if (fbResponse.accessToken) {
+            try {
+                const response = await axios.post(url + "/api/vpn/facebook-login", {
+                    name: fbResponse.name,
+                    email: fbResponse.email
+                });
+
+                if (response.data.success) {
+                    setToken(response.data.token);
+                    localStorage.setItem("token", response.data.token);
+                    setShowLogin(false);
+                    alert("Facebook Login Successful! 🚀");
+                } else {
+                    alert(response.data.message);
+                }
+            } catch (err) {
+                console.log("Facebook Auth Error:", err);
+                alert("Facebook Login Failed!");
+            }
+        }
+    };
+
+    return (
+        <div className='login-popup fixed inset-0 z-[1000] bg-black bg-opacity-60 flex items-center justify-center p-4'>
+            <form onSubmit={onLogin} className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md relative animate-fadeIn">
+                
+                {/* Close Button */}
+                <button 
+                    type="button"
+                    onClick={() => setShowLogin(false)} 
+                    className="absolute top-4 right-4 text-2xl font-bold text-gray-400 hover:text-red-500 transition-colors"
+                >
+                    ✕
+                </button>
+
+                <div className="text-center mb-6">
+                    <h2 className="text-3xl font-extrabold text-gray-800">{currState}</h2>
+                    <p className="text-gray-500 text-sm mt-1">Please enter your details</p>
+                </div>
+
+                <div className="flex flex-col gap-4 mb-6">
+                    {currState !== "Login" && (
+                        <div className="flex flex-col gap-1">
+                            <label className="text-xs font-semibold text-gray-600 ml-1">Full Name</label>
+                            <input
+                                name='name'
+                                onChange={onChangeHandler}
+                                value={data.name}
+                                type="text"
+                                placeholder='Naime Hussain'
+                                required
+                                className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                            />
+                        </div>
+                    )}
+
+                    <div className="flex flex-col gap-1">
+                        <label className="text-xs font-semibold text-gray-600 ml-1">Email Address</label>
+                        <input
+                            name='email'
+                            onChange={onChangeHandler}
+                            value={data.email}
+                            type="email"
+                            placeholder='example@gmail.com'
+                            required
+                            className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                        <label className="text-xs font-semibold text-gray-600 ml-1">Password</label>
+                        <input
+                            name='password'
+                            onChange={onChangeHandler}
+                            value={data.password}
+                            type="password"
+                            placeholder='••••••••'
+                            required
+                            className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                        />
+                    </div>
+                </div>
+
+                <button
+                    type='submit'
+                    className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 shadow-lg transform transition active:scale-95"
+                >
+                    {currState === "Sign Up" ? "Create Account" : "Login"}
+                </button>
+
+                {/* ✅ Social Login Section */}
+                <div className="mt-6 flex flex-col items-center gap-3">
+                    <div className="flex items-center w-full gap-2">
+                        <div className="h-[1px] bg-gray-200 grow"></div>
+                        <span className="text-xs text-gray-400 uppercase">Or continue with</span>
+                        <div className="h-[1px] bg-gray-200 grow"></div>
+                    </div>
+
+                    <div className="w-full flex flex-col gap-2">
+                        {/* Google Login */}
+                        <div className="flex justify-center">
+                            <GoogleLogin
+                                onSuccess={async (credentialResponse) => {
+                                    try {
+                                        const decoded = jwtDecode(credentialResponse.credential);
+                                        const response = await axios.post(
+                                            url + "/api/vpn/google-login",
+                                            {
+                                                name: decoded.name,
+                                                email: decoded.email
+                                            }
+                                        );
+
+                                        if (response.data.success) {
+                                            setToken(response.data.token);
+                                            localStorage.setItem("token", response.data.token);
+                                            setShowLogin(false);
+                                            alert("Google Login Successful! 🚀");
+                                        } else {
+                                            alert(response.data.message);
+                                        }
+                                    } catch (err) {
+                                        console.log("Google Auth Error:", err);
+                                        alert("Google Login Failed! Google Login Successful! 🚀");
+                                    }
+                                }}
+                                onError={() => alert("Google Login Failed!")}
+                                theme="outline"
+                                shape="pill"
+                            />
+                        </div>
+
+                        {/* ✅ Facebook Login Button */}
+                        <FacebookLogin
+                            appId="2177532076392166" // আপনার Facebook App ID
+                            autoLoad={false}
+                            fields="name,email,picture"
+                            callback={responseFacebook}
+                            render={renderProps => (
+                                <button 
+                                    type="button"
+                                    onClick={renderProps.onClick}
+                                    className="w-full bg-[#1877F2] text-white py-2 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-[#166fe5] transition-all shadow-md active:scale-95 text-sm"
+                                >
+                                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                    </svg>
+                                    Continue with Facebook
+                                </button>
+                            )}
+                        />
+                    </div>
+                </div>
+
+                <div className="mt-6 text-center text-sm text-gray-600">
+                    {currState === "Login" ? (
+                        <p>
+                            New here?{" "}
+                            <span
+                                className="text-blue-600 font-bold cursor-pointer hover:underline"
+                                onClick={() => setCurrState("Sign Up")}
+                            >
+                                Create a new account
+                            </span>
+                        </p>
+                    ) : (
+                        <p>
+                            Already have an account?{" "}
+                            <span
+                                className="text-blue-600 font-bold cursor-pointer hover:underline"
+                                onClick={() => setCurrState("Login")}
+                            >
+                                Login here
+                            </span>
+                        </p>
+                    )}
+                </div>
+            </form>
+        </div>
+    );
+};
+
+export default LoginPopup;
+
+
+import React, { useState, useContext, useEffect } from 'react';
+import { userContext } from '../context/UserContext';
+import axios from 'axios';
+import { jwtDecode } from "jwt-decode";
+import { GoogleLogin } from '@react-oauth/google';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import { useSyncExternalStore } from 'react';
+
+const LoginPopup = ({ setShowLogin }) => {
+    const { url, setToken, token } = useContext(userContext);
+    const [currState, setCurrState] = useState("Login");
+    const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
+    const [timeLeft, setTimeLeft] = useState(null);
+    
+    const [data, setData] = useState({
+        name: "",
+        email: "",
+        password: ""
+    });
+        
+    // ⏰ টোকেন মেয়াদ চেক (1 মিনিট প্র্যাকটিস)
+    useEffect(() => {
+        const checkTokenExpiry = () => {
+            const storedToken = localStorage.getItem("token");
+            if (storedToken) {
+                try {
+                    const decoded = jwtDecode(storedToken);
+                    const currentTime = Date.now() / 1000;
+                    
+                    if (decoded.exp < currentTime) {
+                        localStorage.removeItem("token");
+                        setToken(null);
+                        alert("⏰ Session expired (1 minute)! Please login again.");
+                        setShowLogin(true);
+                    } else {
+                        const remaining = Math.round(decoded.exp - currentTime);
+                        setTimeLeft(remaining);
+                    }
+                } catch (error) {
+                    console.log("Invalid token");
+                }
+            }
+        };
+        
+        checkTokenExpiry();
+        const interval = setInterval(checkTokenExpiry, 5000);
+        return () => clearInterval(interval);
+    }, [setToken, setShowLogin]);
+
+    const onChangeHandler = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setData(data => ({ ...data, [name]: value }));
+    };
+
+    const onLogin = async (event) => {
+        event.preventDefault();
+        setLoading(true);
+        let newUrl = url;
+
+        if (currState === "Login") {
+            newUrl += "/api/vpn/login";
+        } else {
+            newUrl += "/api/vpn/register";
+        }
+
+        try {
+            const response = await axios.post(newUrl, {
+                ...data,
+                rememberMe: rememberMe
+            });
+
+            if (response.data.success) {
+                setToken(response.data.token);
+                localStorage.setItem("token", response.data.token);
+                if (rememberMe) {
+                    localStorage.setItem("rememberMe", "true");
+                }
+                setShowLogin(false);
+                
+                // Decode and show expiry info
+                const decoded = jwtDecode(response.data.token);
+                alert(`${currState} Successful! 🎉\nToken expires in ${Math.round(decoded.exp - Date.now()/1000)} seconds`);
+            } else {
+                alert(response.data.message);
+            }
+        } catch (error) {
+            console.log("Login Error:", error);
+            alert("Error connecting to server!");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSocialLogin = async (provider, userData) => {
+        setLoading(true);
+        try {
+            const response = await axios.post(`${url}/api/vpn/${provider}-login`, userData);
+            if (response.data.success) {
+                setToken(response.data.token);
+                localStorage.setItem("token", response.data.token);
+                setShowLogin(false);
+                
+                const decoded = jwtDecode(response.data.token);
+                alert(`${provider} Login Successful! 🚀\nToken expires in ${Math.round(decoded.exp - Date.now()/1000)} seconds`);
+            } else {
+                alert(response.data.message);
+            }
+        } catch (err) {
+            console.log(`${provider} Auth Error:`, err);
+            alert(`${provider} Login Failed!`);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className='fixed inset-0 z-[1000] bg-black bg-opacity-60 flex items-center justify-center p-4 backdrop-blur-sm'>
+            <form onSubmit={onLogin} className="bg-white rounded-2xl shadow-2xl w-full max-w-md relative animate-fadeIn overflow-hidden">
+                
+                {/* Header with gradient */}
+                <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
+                    <button 
+                        type="button"
+                        onClick={() => setShowLogin(false)} 
+                        className="absolute top-4 right-4 text-white/80 hover:text-white text-2xl transition-colors"
+                    >
+                        ✕
+                    </button>
+                    <h2 className="text-3xl font-bold">{currState}</h2>
+                    <p className="text-white/80 text-sm mt-1">
+                        {currState === "Login" ? "Welcome back!" : "Create your account"}
+                    </p>
+                    {timeLeft && timeLeft > 0 && currState === "Login" && (
+                        <div className="mt-2 text-xs bg-white/20 inline-block px-2 py-1 rounded-full">
+                            ⏱️ Demo mode: Token expires in {timeLeft}s
+                        </div>
+                    )}
+                </div>
+
+                {/* Form Body */}
+                <div className="p-6">
+                    <div className="space-y-4 mb-6">
+                        {currState !== "Login" && (
+                            <div>
+                                <label className="text-xs font-semibold text-gray-600 ml-1 block mb-1">Full Name</label>
+                                <input
+                                    name='name'
+                                    onChange={onChangeHandler}
+                                    value={data.name}
+                                    type="text"
+                                    placeholder='John Doe'
+                                    required
+                                    className="w-full border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                />
+                            </div>
+                        )}
+
+                        <div>
+                            <label className="text-xs font-semibold text-gray-600 ml-1 block mb-1">Email Address</label>
+                            <input
+                                name='email'
+                                onChange={onChangeHandler}
+                                value={data.email}
+                                type="email"
+                                placeholder='hello@example.com'
+                                required
+                                className="w-full border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="text-xs font-semibold text-gray-600 ml-1 block mb-1">Password</label>
+                            <div className="relative">
+                                <input
+                                    name='password'
+                                    onChange={onChangeHandler}
+                                    value={data.password}
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder='••••••••'
+                                    required
+                                    className="w-full border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all pr-12"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                >
+                                    {showPassword ? "🙈" : "👁️"}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Remember Me & Forgot Password */}
+                    {currState === "Login" && (
+                        <div className="flex items-center justify-between mb-6">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={rememberMe}
+                                    onChange={(e) => setRememberMe(e.target.checked)}
+                                    className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                                />
+                                <span className="text-sm text-gray-600">Remember me</span>
+                            </label>
+                            <a href="#" className="text-sm text-blue-600 hover:underline">Forgot password?</a>
+                        </div>
+                    )}
+
+                    {/* Submit Button */}
+                    <button
+                        type='submit'
+                        disabled={loading}
+                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-bold hover:shadow-lg transform transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {loading ? (
+                            <div className="flex items-center justify-center gap-2">
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                Processing...
+                            </div>
+                        ) : (
+                            currState === "Sign Up" ? "Create Account" : "Login"
+                        )}
+                    </button>
+
+                    {/* Social Login */}
+                    <div className="mt-6">
+                        <div className="relative text-center">
+                            <div className="h-px bg-gray-200"></div>
+                            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-4 text-xs text-gray-400">
+                                Or continue with
+                            </span>
+                        </div>
+
+                        <div className="mt-4 space-y-2">
+                            {/* Google Button */}
+                            <GoogleLogin
+                                onSuccess={async (credentialResponse) => {
+                                    const decoded = jwtDecode(credentialResponse.credential);
+                                    await handleSocialLogin("google", {
+                                        name: decoded.name,
+                                        email: decoded.email
+                                    });
+                                }}
+                                onError={() => alert("Google Login Failed!")}
+                                theme="outline"
+                                shape="pill"
+                                width="100%"
+                                text="continue_with"
+                            />
+
+                            {/* Facebook Button */}
+                            <FacebookLogin
+                                appId="2177532076392166"
+                                autoLoad={false}
+                                fields="name,email"
+                                callback={async (fbResponse) => {
+                                    if (fbResponse.accessToken) {
+                                        await handleSocialLogin("facebook", {
+                                            name: fbResponse.name,
+                                            email: fbResponse.email
+                                        });
+                                    }
+                                }}
+                                render={renderProps => (
+                                    <button 
+                                        type="button"
+                                        onClick={renderProps.onClick}
+                                        className="w-full bg-[#1877F2] text-white py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-[#166fe5] transition-all shadow-md"
+                                    >
+                                        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                        </svg>
+                                        Continue with Facebook
+                                    </button>
+                                )}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Toggle between Login & Sign Up */}
+                    <div className="mt-6 text-center text-sm text-gray-600">
+                        {currState === "Login" ? (
+                            <p>
+                                Don't have an account?{" "}
+                                <button
+                                    type="button"
+                                    onClick={() => setCurrState("Sign Up")}
+                                    className="text-blue-600 font-bold hover:underline"
+                                >
+                                    Sign up for free
+                                </button>
+                            </p>
+                        ) : (
+                            <p>
+                                Already have an account?{" "}
+                                <button
+                                    type="button"
+                                    onClick={() => setCurrState("Login")}
+                                    className="text-blue-600 font-bold hover:underline"
+                                >
+                                    Sign in
+                                </button>
+                            </p>
+                        )}
+                    </div>
+                </div>
+
+                {/* Demo Info Banner */}
+                <div className="bg-yellow-50 p-3 text-center text-xs text-yellow-700 border-t border-yellow-200">
+                    ⏱️ Demo Mode: Token expires in <strong>1 minute</strong> for testing
+                </div>
+            </form>
+        </div>
+    );
+};
+
+export default LoginPopup;

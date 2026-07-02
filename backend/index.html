@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h3>Single File Upload</h3>
+  <input type="file" id="single">
+  <button onclick="uploadSingle()">Upload</button>
+
+  <h3>Multiple Files Upload</h3>
+  <input type="file" id="multiple" multiple>
+  <button onclick="uploadMultiple()">Upload</button>
+
+  <pre id="result"></pre>
+
+  <script>
+    async function uploadSingle() {
+      const file = document.getElementById('single').files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const res = await fetch('http://localhost:5000/api/upload/single', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      document.getElementById('result').innerHTML = JSON.stringify(data, null, 2);
+      console.log(res.error);
+      
+    }
+
+    async function uploadMultiple() {
+      const files = document.getElementById('multiple').files;
+      const formData = new FormData();
+      
+      for(let file of files) {
+        formData.append('files', file);
+      }
+      
+      const res = await fetch('http://localhost:5000/api/upload/multiple', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      document.getElementById('result').innerHTML = JSON.stringify(data, null, 2);
+
+      console.log(res);
+      
+    }
+
+    
+    
+  </script>
+</body>
+</html>

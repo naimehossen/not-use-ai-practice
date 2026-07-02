@@ -1,0 +1,103 @@
+src/
+├── api/
+│   ├── axios.ts                 # axios instance with interceptors
+│   ├── authApi.ts               
+│   ├── userApi.ts
+│   ├── productApi.ts
+│   └── index.ts                 # barrel export
+│
+├── assets/
+│   ├── images/
+│   │   ├── logo.svg
+│   │   └── placeholder.png
+│   ├── fonts/                   # local fonts
+│   └── icons/                    # custom SVG icons
+│
+├── components/
+│   ├── ui/                       # shadcn/ui components (auto-generated)
+│   │   ├── button.tsx
+│   │   ├── dialog.tsx
+│   │   └── ...
+│   │
+│   ├── common/                    # আপনার custom reusable components
+│   │   ├── Button/
+│   │   │   ├── Button.tsx
+│   │   │   ├── Button.test.tsx
+│   │   │   └── index.ts
+│   │   ├── Input/
+│   │   └── ...
+│   │
+│   └── layout/                    # layout components
+│       ├── Header/
+│       ├── Footer/
+│       ├── Sidebar/
+│       └── index.ts
+│
+├── features/                      # **NEW** Feature-based modules
+│   ├── auth/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   └── types/
+│   ├── products/
+│   └── cart/
+│
+├── hooks/                         # global custom hooks
+│   ├── useAuth.ts
+│   ├── useDebounce.ts
+│   ├── useLocalStorage.ts
+│   └── index.ts
+│
+├── lib/                           # **NEW** third-party configs
+│   ├── react-query.ts
+│   ├── utils.ts
+│   └── validators.ts
+│
+├── store/                         # Zustand stores
+│   ├── authStore.ts
+│   ├── cartStore.ts
+│   └── uiStore.ts
+│
+├── types/                         # **NEW** global TypeScript types
+│   ├── api.types.ts
+│   ├── auth.types.ts
+│   ├── product.types.ts
+│   └── index.ts
+│
+├── utils/                         
+│   ├── constants.ts
+│   ├── formatters.ts
+│   ├── helpers.ts
+│   └── validators.ts
+│
+├── routes/
+│   ├── AppRoutes.tsx
+│   ├── PrivateRoute.tsx
+│   ├── PublicRoute.tsx
+│   └── routePaths.ts
+│
+├── pages/                          # page-level components (routes)
+│   ├── Home/
+│   │   ├── Home.tsx
+│   │   └── Home.module.css
+│   ├── About/
+│   ├── Dashboard/
+│   │   ├── Dashboard.tsx
+│   │   ├── components/            # page-specific components
+│   │   │   ├── Overview.tsx
+│   │   │   └── Settings.tsx
+│   │   └── hooks/                  # page-specific hooks
+│   └── index.ts
+│
+├── config/                         # app configuration
+│   ├── environment.ts
+│   └── site.ts
+│
+├── styles/
+│   ├── globals.css
+│   ├── variables.css
+│   └── tailwind.css
+│
+├── App.tsx
+├── main.tsx
+└── vite-env.d.ts                   # Vite + TypeScript types

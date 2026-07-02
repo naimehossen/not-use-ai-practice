@@ -1,0 +1,151 @@
+import React,{useState,useEffect} from 'react'
+import axios from 'axios';
+const Profile = () => {
+    const [users, setUsers] = useState([]);
+    const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+    const [editingId, setEditingId] = useState(null);
+
+    const API_BASE = 'http://localhost:5000/api/vpn/partice'; // আপনার API URL
+
+    // ---- GET (লিস্ট দেখানো) ----
+    const fetchUsers = async () => {
+        try {
+            const res = await axios.get(API_BASE);
+            if (res.data.success) {
+                setUsers(res.data.users);
+            }
+        } catch (error) {
+            console.error("Fetch error:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    // ---- ইনপুট হ্যান্ডেল ----
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    // ---- POST (Create) / PUT (Update) ----
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            if (editingId) {
+                // ---- UPDATE (PUT) ----
+                const res = await axios.put(`${API_BASE}/${editingId}`, formData);
+                if (res.data.success) {
+                    alert('Updated successfully!');
+                    setEditingId(null);
+                }
+            } else {
+                // ---- CREATE (POST) ----
+                const res = await axios.post(API_BASE, formData);
+                if (res.data.success) {
+                    alert('Created successfully!');
+                }
+            }
+            setFormData({ name: '', email: '', password: '' });
+            fetchUsers(); // লিস্ট রিফ্রেশ
+        } catch (error) {
+            alert('Operation failed!');
+        }
+    };
+
+    // ---- EDIT (ফর্মে ডাটা বসানো) ----
+    const handleEdit = (user) => {
+        setEditingId(user._id);
+        setFormData({ 
+            name: user.name, 
+            email: user.email, 
+            password: user.password // পাসওয়ার্ড সাধারণত ফাঁকা রাখা হয়
+        });
+    };
+
+    
+    
+    
+    // ---- DELETE ----
+    const handleDelete = async (id) => {
+ 
+        if (window.confirm("are you sure")) {
+                    try {
+            const res = await axios.delete(`${API_BASE}/${id}`);
+            if (res.data.success) {
+                alert('Deleted!');
+                fetchUsers(); // লিস্ট আপডেট
+            }
+        } catch (error) {
+            alert('Delete failed!');
+            
+        }
+        }
+        
+    
+    };
+
+  return (
+  <div style={{ padding: '20px' }}>
+            <h2>{editingId ? 'Update Partice' : 'Add New Partice'}</h2>
+            
+            {/* ----- ফর্ম (POST/PUT) ----- */}
+            <form onSubmit={handleSubmit} style={{ marginBottom: '30px' }}>
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                />
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    disabled={editingId} // ইমেইল এডিট না করাই ভালো কারণ ইউনিক
+                />
+                <input
+                    type="text"
+                    name="password"
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required={!editingId} // আপডেটের সময় পাসওয়ার্ড অপশনাল হতে পারে
+                />
+                <button type="submit">
+                    {editingId ? 'Update' : 'Create'}
+                </button>
+                {editingId && (
+                    <button type="button" onClick={() => { setEditingId(null); setFormData({ name: '', email: '', password: '' }); }}>
+                        Cancel
+                    </button>
+                )}
+            </form>
+
+            {/* ----- ইউজার লিস্ট ও DELETE বাটন ----- */}
+            <h3>User List</h3>
+            <ul>
+                {users.map((user) => (
+                    <li key={user._id} style={{ marginBottom: '10px' }}>
+                        <strong>{user.name}</strong> ({user.email})
+                        <button onClick={() => handleEdit(user)} style={{ marginLeft: '10px' }}>
+                            Edit
+                        </button>
+                        <button 
+                            onClick={() => handleDelete(user._id)} 
+                            style={{ marginLeft: '5px', background: 'red', color: 'white' }}
+                        >
+                            Delete
+                        </button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+  )
+}
+
+export default Profile

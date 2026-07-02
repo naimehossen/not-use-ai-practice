@@ -1,0 +1,9 @@
+/* Tailwind base styles */
+@tailwind base;
+
+/* Tailwind components (buttons, forms, cards ইত্যাদি) */
+@tailwind components;
+
+/* Tailwind utilities (margin, padding, flex, grid, text-color ইত্যাদি) */
+@tailwind utilities;
+

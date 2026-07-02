@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer utilities {
+  .shadow-top {
+    box-shadow: 0 -4px 6px -1px rgba(19, 6, 6, 0.1);
+  }
+  
+  .shadow-bottom {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .shadow-left {
+    box-shadow: -4px 0 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .shadow-right {
+    box-shadow: 4px 0 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .shadow-top-lg {
+    box-shadow: 0 -10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .shadow-bottom-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+}
+
+
+.germania-one-regular {
+  font-family: "Germania One", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@keyframes my-anim{
+  0%{
+    transform: rotate(0deg);
+  }
+50%{transform: rotate(250deg) scale(2);}
+  100%{
+    transform: rotate(360deg) scale(0);
+  }
+}
+
+.anim{
+  animation: my-anim 1s linear infinite;
+}
+
+@keyframes op{
+  0%{
+    opacity: 0;
+  }
+  50%{
+    opacity: 0.5;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+.n{
+  animation: op 3s  infinite;
+}
+
+@keyframes hhh{
+  0%{
+    background-color: aqua;
+    opacity: 0;
+    width: 100px;
+
+  }
+  50%{
+    background-color: blue;
+    opacity: 0.5;
+
+  }
+
+  100%{
+    background-color: brown;
+    opacity: 1;
+  }
+}
+
+.b{
+  animation: hhh 5s linear infinite;
+}
+
+@keyframes moveLeft {
+
+  0%{
+    transform: translateX(300px);
+  }
+
+  100%{
+    transform: translateX(-300px);
+  }
+
+}
+
+.img-move{
+  animation: moveLeft 3s linear infinite;
+}

@@ -1,0 +1,37 @@
+// tige-codegen.tiger - x86-64 Assembly জেনারেটর
+
+fn generateAssembly(@ast: array) -> string {
+    @asm = ""
+    @asm = ${@asm} + "section .text\n"
+    @asm = ${@asm} + "global _start\n\n"
+    @asm = ${@asm} + "_start:\n"
+    
+    @i = 0
+    while ${@i} < len(${@ast}) {
+        @node = ${@ast}[${@i}]
+        
+        if ${@node}.type == "assignment" {
+            // @x = 42 → mov eax, 42
+            @asm = ${@asm} + "    mov     eax, " + ${@node}.value + "\n"
+            @asm = ${@asm} + "    mov     [" + ${@node}.name + "], eax\n"
+        }
+        else if ${@node}.type == "add" {
+            // add(a, b) → add eax, ebx
+            @asm = ${@asm} + "    mov     eax, " + ${@node}.left + "\n"
+            @asm = ${@asm} + "    mov     ebx, " + ${@node}.right + "\n"
+            @asm = ${@asm} + "    add     eax, ebx\n"
+        }
+        else if ${@node}.type == "print" {
+            @asm = ${@asm} + "    mov     rdi, msg\n"
+            @asm = ${@asm} + "    call    printf\n"
+        }
+        
+        @i = ${@i} + 1
+    }
+    
+    @asm = ${@asm} + "    mov     eax, 60\n"
+    @asm = ${@asm} + "    xor     edi, edi\n"
+    @asm = ${@asm} + "    syscall\n"
+    
+    ! ${@asm}
+}

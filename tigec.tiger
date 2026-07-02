@@ -1,0 +1,39 @@
+// tigec.tiger - সম্পূর্ণ Tige কম্পাইলার (Tige-তে লেখা!)
+
+fn compile(@filename: string) -> void {
+    // ১. ফাইল পড়া
+    @source = readFile(${@filename})
+    print("Source loaded: " + len(${@source}) + " bytes")
+    
+    // ২. টোকেনাইজ
+    @tokens = parseTokens(${@source})
+    print("Tokens: " + len(${@tokens}) + " found")
+    
+    // ৩. পার্স করে AST বানানো
+    @ast = parseAST(${@tokens})
+    print("AST built with " + len(${@ast}) + " nodes")
+    
+    // ৪. Assembly জেনারেট
+    @asm = generateAssembly(${@ast})
+    
+    // ৫. ফাইলে লেখা
+    @outfile = replace(${@filename}, ".tiger", ".asm")
+    writeFile(${@outfile}, ${@asm})
+    print("Generated: " + ${@outfile})
+    
+    // ৬. NASM + Linker দিয়ে .exe বানানো
+    @exefile = replace(${@filename}, ".tiger", ".exe")
+    sys_exec("nasm -f win64 " + ${@outfile} + " -o temp.obj")
+    sys_exec("link temp.obj /subsystem:console /out:" + ${@exefile} + " /entry:main")
+    print("Compiled: " + ${@exefile})
+}
+
+// Main
+fn main() -> void {
+    if len(args) < 2 {
+        print("Usage: tigec <file.tiger>")
+        return
+    }
+    
+    compile(args[1])
+}

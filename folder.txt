@@ -1,0 +1,196 @@
+not_ai_p/                               ← Root Folder
+│
+├── public/                             ← Static Files
+│   └── favicon.ico
+│
+├── src/                                ← সব Code এখানে!
+│   │
+│   ├── api/                            ← 🔌 API Layer (NEW!)
+│   │   ├── axios.js                    ← Axios Config (Base URL, Token)
+│   │   ├── endpoints.js                ← All Endpoints
+│   │   ├── auth.api.js                 ← Auth APIs
+│   │   ├── upload.api.js               ← Upload APIs
+│   │   └── user.api.js                 ← User APIs
+│   │
+│   ├── assets/                         ← 🖼️ Static Files
+│   │   ├── images/
+│   │   └── fonts/
+│   │
+│   ├── components/                     ← 🧩 Reusable Components
+│   │   ├── common/                     ← Button, Input, Card
+│   │   │   ├── Button.jsx
+│   │   │   ├── Input.jsx
+│   │   │   └── Card.jsx
+│   │   │
+│   │   ├── layout/                     ← Page Structure
+│   │   │   ├── Navber.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   └── Sidebar.jsx
+│   │   │
+│   │   └── ui/                         ← Feedback Components
+│   │       ├── Modal.jsx
+│   │       ├── Loading.jsx
+│   │       └── Toast.jsx
+│   │
+│   ├── pages/                          ← 📄 Full Pages
+│   │   ├── Home.jsx
+│   │   ├── About.jsx
+│   │   ├── Contact.jsx
+│   │   └── NotFound.jsx
+│   │
+│   ├── hooks/                          ← 🪝 Custom Hooks
+│   │   ├── useAuth.js
+│   │   ├── useTheme.js
+│   │   └── useFetch.js
+│   │
+│   ├── context/                        ← 🌍 Global State
+│   │   ├── AuthContext.jsx
+│   │   ├── ThemeContext.jsx
+│   │   └── AppContext.jsx
+│   │
+│   ├── utils/                          ← 🛠️ Helpers
+│   │   ├── helpers.js
+│   │   ├── constants.js
+│   │   └── validators.js
+│   │
+│   ├── App.jsx                         ← Main App
+│   ├── main.jsx                        ← Entry Point
+│   └── index.css                       ← Tailwind + Custom CSS
+│
+├── .env                                ← Environment
+├── .env.example                        ← Example Env
+├── .gitignore                          ← Git Ignore
+├── index.html                          ← HTML Entry
+├── package.json                        ← Dependencies
+├── tailwind.config.js                  ← Tailwind Config
+├── postcss.config.js                   ← PostCSS Config
+└── vite.config.js                      ← Vite Config
+
+
+replace()	Text বদলানো	"hello".replace("h", "y") → "yello"
+replaceAll()	সব Text বদলানো	"haha".replaceAll("a", "o") → "hoho"
+split()	ভাগ করা	"a,b,c".split(",") → ["a","b","c"]
+join()	জোড়া	["a","b"].join("-") → "a-b"
+includes()	আছে কিনা?	"hello".includes("ell") → true
+startsWith()	শুরুতে আছে?	"hello".startsWith("he") → true
+endsWith()	শেষে আছে?	"hello".endsWith("lo") → true
+toLowerCase()	ছোট হাতের	"HELLO".toLowerCase() → "hello"
+toUpperCase()	বড় হাতের	"hello".toUpperCase() → "HELLO"
+trim()	Space বাদ	" hi ".trim()→"hi"` |
+slice()	অংশ নেওয়া	"hello".slice(1,3) → "el"
+charAt()	নির্দিষ্ট অক্ষর	"hello".charAt(0) → "h"
+length	দৈর্ঘ্য	"hello".length → 5
+
+
+
+push()	শেষে যোগ	[1,2].push(3) → [1,2,3]
+pop()	শেষ থেকে বাদ	[1,2,3].pop() → [1,2]
+unshift()	শুরুতে যোগ	[2,3].unshift(1) → [1,2,3]
+shift()	শুরু থেকে বাদ	[1,2,3].shift() → [2,3]
+map()	Transform	[1,2].map(x => x*2) → [2,4]
+filter()	Filter	[1,2,3].filter(x => x>1) → [2,3]
+find()	প্রথম Match	[1,2,3].find(x => x>1) → 2
+findIndex()	Index খোঁজা	[1,2,3].findIndex(x => x===2) → 1
+includes()	আছে কিনা?	[1,2,3].includes(2) → true
+reduce()	Accumulate	[1,2,3].reduce((s,x) => s+x, 0) → 6
+sort()	সাজানো	[3,1,2].sort() → [1,2,3]
+reverse()	উল্টানো	[1,2,3].reverse() → [3,2,1]
+slice()	অংশ নেওয়া	[1,2,3,4].slice(1,3) → [2,3]
+splice()	বাদ/যোগ	[1,2,3].splice(1,1) → [1,3]
+concat()	জোড়া	[1,2].concat([3,4]) → [1,2,3,4]
+some()	যেকোনো Match?	[1,2,3].some(x => x>2) → true
+every()	সব Match?	[1,2,3].every(x => x>0) → true
+flat()	Nested Flat	[[1],[2]].flat() → [1,2]
+
+
+Object.keys(obj)	সব Keys
+Object.values(obj)	সব Values
+Object.entries(obj)	[key, value] Pairs
+Object.assign(target, source)	Copy/Merge
+Object.freeze(obj)	Lock Object
+delete obj.key	Property Delete
+"key" in obj	Check Key Exists
+
+
+parseInt()	String → Int	parseInt("10") → 10
+parseFloat()	String → Float	parseFloat("10.5") → 10.5
+toFixed()	Decimal Fix	(10.567).toFixed(2) → "10.57"
+isNaN()	NaN Check	isNaN("abc") → true
+Math.round()	Round	Math.round(10.5) → 11
+Math.floor()	নিচের দিকে	Math.floor(10.9) → 10
+Math.ceil()	উপরের দিকে	Math.ceil(10.1) → 11
+Math.random()	Random 0-1	Math.random() → 0.342...
+Math.max()	সবচেয়ে বড়	Math.max(1,2,3) → 3
+Math.min()	সবচেয়ে ছোট	Math.min(1,2,3) → 1
+
+new Date()	Current Date
+date.getFullYear()	Year
+date.getMonth()	Month (0-11)
+date.getDate()	Day
+date.getHours()	Hour
+date.getMinutes()	Minute
+date.toLocaleDateString()	Format Date
+
+
+typeof	Type Check
+Array.isArray()	Array Check
+JSON.stringify()	Object → String
+JSON.parse()	String → Object
+setTimeout()	Delay Execute
+setInterval()	Repeat Execute
+clearTimeout()	Stop Timer
+console.log()	Debug
+console.table()	Table View
+console.error()	Error Log
+
+Aggregation Stages Summary:
+Stage	কাজ	SQL Equivalent
+$match	Filter	WHERE
+$group	Group By	GROUP BY
+$sort	Sort	ORDER BY
+$limit	Limit	LIMIT
+$skip	Skip	OFFSET
+$project	Select Fields	SELECT
+$lookup	Join	JOIN
+$unwind	Array Flat	—
+$facet	Parallel	—
+$count	Count	COUNT()
+$sum	Sum	SUM()
+$avg	Average	AVG()
+
+
+🔹 $addFields — New Field Add
+🔹 $bucket — Range Grouping
+🔹 $sortByCount — Group + Count + Sort একসাথে
+🔹 $merge — Output অন্য Collection-এ
+🔹 $out — Output New Collection
+🔹 $geoNear — Location-based Search
+
+4	Calculate	{ sizeKB: { $divide: ['$size', 1024] } }
+5	Conditional	{ $cond: { if: {...}, then: 'Big', else: 'Small' } }
+6	Concatenate	{ full: { $concat: ['$first', ' ', '$last'] } }
+7	Nested Object	{ info: { name: '$name', age: '$age' } }
+8	Array Access	{ first: { $arrayElemAt: ['$arr', 0] } }
+
+ছোট কিনা	<	{ $lt: [expr1, expr2] }
+ছোট বা সমান	<=	{ $lte: [expr1, expr2] }
+বড় কিনা	>	{ $gt: [expr1, expr2] }
+বড় বা সমান	>=	{ $gte: [expr1, expr2] }
+সমান কিনা	==	{ $eq: [expr1, expr2] }
+সমান না	!=	{ $ne: [expr1, expr2] }
+যোগ	+	{ $add: [expr1, expr2] }
+বিয়োগ	-	{ $subtract: [expr1, expr2] }
+গুণ	*	{ $multiply: [expr1, expr2] }
+ভাগ	/	{ $divide: [expr1, expr2] }
+ভাগশেষ	%	{ $mod: [expr1, expr2] }
+
+PyTorch দিয়ে স্ক্র্যাচ থেকে ট্রান্সফরমার বানানো
+
+Attention Mechanism নিজে ইমপ্লিমেন্ট করা
+
+CUDA লেভেলে অপ্টিমাইজেশন বোঝা
+
+Training Pipeline (forward pass, backward pass, gradient update) স্ক্র্যাচ থেকে লেখা
+
+RLHF / DPO এর পেছনের ম্যাথ
+
