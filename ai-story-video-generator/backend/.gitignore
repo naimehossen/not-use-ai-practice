@@ -29,3 +29,14 @@ dist/
 build/
 .next/
 out/
+# .gitignore file open করে add করুন:
+**/venv/
+**/Lib/
+*.pyd
+*.exe
+*.dll
+*.so
+*.zip
+*.rar
+*.avi
+*.mp4
