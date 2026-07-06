@@ -8,9 +8,9 @@ const courses = Array.from({ length: 500 }, (_, i) => ({
     title: `Course ${i + 1}`,
     category: ['Cloud', 'Security', 'ERP', 'AI', 'DevOps'][i % 5],
     level: ['Beginner', 'Intermediate', 'Advanced'][i % 3],
-    price: Math.floor(Math.random() * 500) + 100,
-    rating: (Math.random() * 2 + 3).toFixed(1),
-    duration: `${Math.floor(Math.random() * 40) + 10}h`,
+    price: Math.floor( 500) + 100,
+    rating: ( 2 + 3).toFixed(1),
+    duration: `${Math.floor(  40) + 10}h`,
     color: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'][i % 5],
   }));
 
@@ -26,7 +26,7 @@ const courses = Array.from({ length: 500 }, (_, i) => ({
       <MyResponsiveVirtualList
         items={courses}
         overscan={5}
-        renderItem={(course, index) => (
+        renderItem={(course, ) => (
           <div 
             className="h-full rounded-xl p-4 shadow-md hover:shadow-xl transition-all cursor-pointer border"
             style={{ borderTop: `3px solid ${course.color}` }}
