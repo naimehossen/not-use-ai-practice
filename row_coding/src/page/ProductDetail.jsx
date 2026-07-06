@@ -1,5 +1,5 @@
 // src/pages/ProductDetail.jsx
-import React from 'react';
+
 import { useParams, Link } from 'react-router-dom';
 import { FiStar, FiShoppingCart, FiArrowLeft } from 'react-icons/fi';
 import { products } from '../data/products';

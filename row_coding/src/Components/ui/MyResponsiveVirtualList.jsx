@@ -83,8 +83,7 @@ const MyResponsiveVirtualList=memo(({
   // Total height
   const totalHeight = totalRows * rowHeight;
   const offsetY = startRow * rowHeight;
-  const ff=items.slice(0,10)
-  console.log(startIndex ,'items ==',` `,offsetY  );
+
   
   
   // Scroll Handler

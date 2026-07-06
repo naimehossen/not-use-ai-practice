@@ -5,7 +5,7 @@ import { products } from './../data/products';
 import ProductCard from './../Components/common/ProductCard';
 
 const Products = () => {
-  const [searchParams ,vv] = useSearchParams();
+  const [searchParams ] = useSearchParams();
   const categoryFilter = searchParams.get('category');
   
   const [sortBy, setSortBy] = useState('default');
@@ -20,7 +20,7 @@ const Products = () => {
     if (categoryFilter) {
       filtered = filtered.filter(p => p.category === categoryFilter);
     }
-  console.log('filterred===',filtered);
+
     // Search filter
     if (searchTerm) {
       filtered = filtered.filter(p => 
@@ -54,9 +54,7 @@ const Products = () => {
 
   const categories = [...new Set(products.map(p => p.category))];
 
-console.log( 'categoryfilter=====',categoryFilter);
-console.log('categories===',categories);
-console.log('search',searchTerm,vv(searchTerm));
+
 
 
 

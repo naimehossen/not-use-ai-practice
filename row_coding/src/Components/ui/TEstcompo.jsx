@@ -45,7 +45,7 @@ const TEstcompo = memo(() => {
   const visibleItems = data.slice(startIndex, endIndex);
   const offsetY = startRow * rowHeight;
 
-  console.log(`Showing: ${startIndex}-${endIndex} of ${data.length}`);
+
 
   // 📜 Scroll Handler
   const handleScroll = useCallback((e) => {
@@ -85,7 +85,7 @@ const TEstcompo = memo(() => {
               padding: "0 8px",
             }}
           >
-            {visibleItems.map((item, i) => (
+            {visibleItems.map((item) => (
               <div
                 key={item.id}
                 style={{ height: `${itemHeight}px` }}
