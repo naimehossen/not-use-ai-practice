@@ -1,103 +1,104 @@
-import { memo,useCallback,useState } from "react";
-import { IoPhonePortraitOutline } from "react-icons/io5";
-import { FaTabletAlt } from "react-icons/fa";
-import { RiComputerFill } from "react-icons/ri";
-import { IoIosDesktop } from "react-icons/io";
-import { RiExpandWidthFill } from "react-icons/ri";
-import { RiExpandHeightFill } from "react-icons/ri";
-import { RiBox3Line } from "react-icons/ri";
+import { memo, useCallback, useState, useRef, useEffect } from "react";
 import Custom from "../../hooks/hooksone";
 
-const TEstcompo =memo(()=>{
-    const {width,height,breakpoint}=Custom()
-      const [scrollTop, setScrollTop] = useState(0);
+const TEstcompo = memo(() => {
+  const { width, height, breakpoint } = Custom();
+  const [scrollTop, setScrollTop] = useState(0);
+  const [containersize, setContainersizw] = useState({ width: 0, height: 0 });
+  const ref = useRef(null);
 
-    const data=Array.from({length:100},(_, P)=>{
+  // 📏 ResizeObserver
+  useEffect(() => {
+    const container = ref.current;
+    if (!container) return;
+    const observer = new ResizeObserver(entries => {
+      const entry = entries[0];
+      setContainersizw({
+        width: entry.contentRect.width,
+        height: entry.contentRect.height,
+      });
+    });
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
 
-        return (
-            {
-        id:P + 1,
-        cous:`cures${P+1}`
+  // 📊 Data
+  const data = Array.from({ length: 500 }, (_, i) => ({
+    id: i + 1,
+    cous: `Course ${i + 1}`,
+  }));
 
-            }
-        )
+  // 🎯 Breakpoint Settings
+  const itemsPerRow = breakpoint === "sm" ? 1 : breakpoint === "md" ? 2 : breakpoint === "lg" ? 3 : 4;
+  const itemHeight = breakpoint === "sm" ? 150 : breakpoint === "md" ? 180 : breakpoint === "lg" ? 200 : 220;
+  const gap = 8;
 
-    })
+  // 🧮 Calculations
+  const totalRows = Math.ceil(data.length / itemsPerRow);
+  const rowHeight = itemHeight + gap;
+  const totalHeight = totalRows * rowHeight;
 
-    console.log(scrollTop);
-    
-    
+  const startRow = Math.floor(scrollTop / rowHeight);
+  const visibleRows = Math.ceil(containersize.height / rowHeight) + 1;
+  const startIndex = startRow * itemsPerRow;
+  const endIndex = Math.min(startIndex + (visibleRows * itemsPerRow), data.length);
+  const visibleItems = data.slice(startIndex, endIndex);
+  const offsetY = startRow * rowHeight;
 
+  console.log(`Showing: ${startIndex}-${endIndex} of ${data.length}`);
 
+  // 📜 Scroll Handler
   const handleScroll = useCallback((e) => {
     setScrollTop(e.target.scrollTop);
   }, []);
 
-    return (
-        <div>
-            <h1 className=" text-center font-bold text-2xl p-4"> Response virtual list</h1>
-            <div className=" flex gap-2 p-4 bg-black text-white rounded-md  h-10 mx-3 ">
-{breakpoint==="sm"?<IoPhonePortraitOutline/>:''}
-{breakpoint==="md"?<FaTabletAlt/>:''}
-{breakpoint==="lg"?<RiComputerFill/>:''}
-{breakpoint==="xl"?<IoIosDesktop/>:""}
-<h1 className=" -mt-1 font-medium">{breakpoint}</h1>
-<span className=" text-xl"><RiExpandWidthFill/> </span>
-<h1 className=" ">{width+'x'+ height}</h1>
-<span className=" text-xl"><RiExpandHeightFill/></span>
-        <p><RiBox3Line/></p>
-        <span>{data.length}</span>
-            </div>
-            
+  return (
+    <div className="p-4">
+      {/* Status Bar */}
+      <div className="flex gap-2 p-3 bg-black text-white rounded-md mb-3 text-sm items-center">
+        <span className="font-bold">{breakpoint.toUpperCase()}</span>
+        <span>{width}×{height}</span>
+        <span>Items: {data.length}</span>
+        <span>Cols: {itemsPerRow}</span>
+        <span>Visible: {visibleItems.length}</span>
+      </div>
 
-
-
-        <div  style={{
-            height:" calc(100vh-200px)",
-            overflow:"auto"
-        }}
-
-        className={`bg-white rounded-xl shadow-sm border border-gray-200 `}
+      {/* 📦 Virtual Scroll Container */}
+      <div
+        ref={ref}
+        style={{ height: "400px", overflow: "auto" }}
+        className="bg-gray-50 rounded-lg border"
         onScroll={handleScroll}
-        >
-            <div style={{height:`7900px`,position:"relative"}}>
-
-                <div style={{transform:`translateY(${100}px)`}}>
-
-                    <div style={{display:'grid',gridTemplateColumns:`repeat(${2}, 1fr)`,gap:'5px'}}>
-            <div class="h-20 overflow-y-scroll scrollbar scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full">
-                {data.map(d=>(
-                    <div> 
-                    <h1>{d.cous}</h1> <p></p>
-                    <h1>{d.id}</h1>
-                    </div>
-                ))}
-</div>
-                    </div>
-
-                </div>
-
-            </div>
-
-
+      >
+        {/* 📏 Spacer */}
+        <div style={{ height: `${totalHeight}px`, position: "relative" }}>
+          {/* 📍 Visible Items */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              transform: `translateY(${offsetY}px)`,
+              display: "grid",
+              gridTemplateColumns: `repeat(${itemsPerRow}, 1fr)`,
+              gap: `${gap}px`,
+              width: "100%",
+              padding: "0 8px",
+            }}
+          >
+            {visibleItems.map((item, i) => (
+              <div
+                key={item.id}
+                style={{ height: `${itemHeight}px` }}
+                className="bg-white rounded-lg border shadow-sm flex items-center justify-center hover:bg-blue-50 transition"
+              >
+                {item.cous}
+              </div>
+            ))}
+          </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        </div>
-    )
-})
+      </div>
+    </div>
+  );
+});
 
 export default TEstcompo;

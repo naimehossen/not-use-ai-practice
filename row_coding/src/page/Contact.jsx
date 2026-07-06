@@ -14,7 +14,7 @@ const courses = Array.from({ length: 500 }, (_, i) => ({
     color: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'][i % 5],
   }));
 
-console.log('math==',);
+
 
 
   return ( 
