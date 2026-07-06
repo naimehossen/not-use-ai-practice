@@ -1,4 +1,6 @@
 # 🚀 Full Stack Practice Hub
+# live site or update : https://not-use-ai-practice.onrender.com/
+# এখানে নিমিত update করা হই code আর এটা live থাক অবস্তাই
 
 ## 👨‍💻 About This Repository
 এটা আমার personal practice hub, যেখানে MERN Stack, Python, JavaScript-এর সব practice projects রাখছি।
