@@ -1,46 +1,112 @@
-import { Suspense,lazy } from "react"
-import { Route, Routes } from "react-router-dom"
+import { Suspense, lazy } from "react";
+import { Route, Routes } from "react-router-dom";
 
+// Lazy loader function
+const L = (exportname, filename) =>
+  lazy(() =>
+    import(`${filename}`).then((m) => ({
+      default: m[exportname] || m.default,
+    }))
+  );
 
+// Lazy imports
+const Home = L("Home", "./page/Home");
+const Contact = L("Contact", "./page/Contact");
+const C = L("C", "./page/Contact");
+const Navbar = L("Navber", "./Components/layout/Navber");
+const Products = L("Products", "./page/Products");
+const Cart = L("Cart", "./page/Cart");
+const ProductDetail = L("ProductDetail", "./page/ProductDetail");
+const Notfound = L("Notfound", "./page/Notfound");
+const Footer = L("Footer", "./Components/layout/Footer");
+const Test = L("Test", "./page/Test");
 
-const L=(exportname,filename)=>lazy(()=>import(`${filename}`).then(m=>({default:m[exportname]|| m.default})))
+// 🎨 Better Suspense Fallback Components
+const PageLoader = () => (
+  <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+    <div className="relative">
+      {/* Outer ring */}
+      <div className="h-16 w-16 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
+      {/* Inner dot */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-blue-500 animate-pulse" />
+    </div>
+    <p className="mt-4 text-gray-500 font-medium animate-pulse">Loading...</p>
+    <p className="text-xs text-gray-400 mt-1">Please wait</p>
+  </div>
+);
 
-const Home=L("Home","./page/Home")
-const Contact=L("Contact","./page/Contact")
-const C=L("C","./page/Contact")
-const Navbar=L("Navber","./Components/layout/Navber")
-const Products=L("Products","./page/Products")
-const Cart=L("Cart","./page/Cart")
-const ProductDetail=L("ProductDetail","./page/ProductDetail")
-const Notfound=L("Notfound","./page/Notfound")
-const Footer=L("Footer","./Components/layout/Footer")
-const Test=L("Test","./page/Test")
+const ComponentLoader = () => (
+  <div className="flex items-center justify-center p-8">
+    <div className="flex items-center gap-3 bg-white rounded-xl shadow-sm border px-6 py-4">
+      <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
+      <span className="text-sm font-medium text-gray-600">Loading component...</span>
+    </div>
+  </div>
+);
 
+const SkeletonLoader = () => (
+  <div className="p-6 space-y-4 animate-pulse">
+    {/* Header skeleton */}
+    <div className="h-8 bg-gray-200 rounded w-1/3" />
+    {/* Content skeleton */}
+    <div className="space-y-2">
+      <div className="h-4 bg-gray-200 rounded w-full" />
+      <div className="h-4 bg-gray-200 rounded w-5/6" />
+      <div className="h-4 bg-gray-200 rounded w-4/6" />
+    </div>
+    {/* Card skeleton */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="h-32 bg-gray-200 rounded-lg" />
+      ))}
+    </div>
+  </div>
+);
 
+// 🔄 Progress Bar Loader
+const ProgressLoader = () => (
+  <div className="flex flex-col items-center justify-center min-h-screen bg-white">
+    <div className="w-48 space-y-3">
+      <div className="flex justify-between text-xs text-gray-500">
+        <span>Loading...</span>
+        <span>Please wait</span>
+      </div>
+      <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+        <div className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-loading-bar" />
+      </div>
+    </div>
+  </div>
+);
 
+// 🎯 Main App
+export const App = () => {
+  return (
+    <div className="min-h-screen flex flex-col">
+      {/* Navbar always loaded (বা lazy চাইলে) */}
+      <Suspense fallback={<div className="h-16 bg-white border-b animate-pulse" />}>
+        <Navbar />
+      </Suspense>
 
+      {/* Main Content with Suspense */}
+      <main className="flex-1">
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/c" element={<C />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/test" element={<Test />} />
+            <Route path="*" element={<Notfound />} />
+          </Routes>
+        </Suspense>
+      </main>
 
-
-export const App=()=>{
-
-    return(
-        <div>
-            
-            <Suspense fallback={<div>Loading...</div>}>
-            <Navbar />
-                <Routes>
-                    <Route path="/" element={<Home/>} />
-                    <Route path="/contact" element={<Contact/>} />
-                    <Route path="/c" element={<C/>} />
-                    <Route path="/products" element={<Products/>} />
-                    <Route path="/cart" element={<Cart/>} />
-                    <Route path="/product/:id" element={<ProductDetail/>} />
-                    <Route path="/test" element ={<Test/>} />
-                    <Route path="*" element={<Notfound/>} />
-                </Routes>
-                <Footer />
-            </Suspense>
-            
-        </div>
-    )
-}
+      {/* Footer always loaded */}
+      <Suspense fallback={<div className="h-20 bg-gray-100 animate-pulse" />}>
+        <Footer />
+      </Suspense>
+    </div>
+  );
+};
