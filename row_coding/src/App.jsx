@@ -1,25 +1,17 @@
 import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 
-// Lazy loader function
-const L = (exportname, filename) =>
-  lazy(() =>
-    import(`${filename}`).then((m) => ({
-      default: m[exportname] || m.default,
-    }))
-  );
-
-// Lazy imports
-const Home = L("Home", "./page/Home");
-const Contact = L("Contact", "./page/Contact");
-const C = L("C", "./page/Contact");
-const Navbar = L("Navber", "./Components/layout/Navber");
-const Products = L("Products", "./page/Products");
-const Cart = L("Cart", "./page/Cart");
-const ProductDetail = L("ProductDetail", "./page/ProductDetail");
-const Notfound = L("Notfound", "./page/Notfound");
-const Footer = L("Footer", "./Components/layout/Footer");
-const Test = L("Test", "./page/Test");
+// ✅ আপনার দেওয়া হুবহু সঠিক পাথ ব্যবহার করে স্ট্যান্ডার্ড Lazy Import:
+const Home = lazy(() => import("./page/Home"));
+const Contact = lazy(() => import("./page/Contact"));
+const C = lazy(() => import("./page/Contact"));
+const Navbar = lazy(() => import("./Components/layout/Navber")); // আপনার সঠিক পাথ 'Navber'
+const Products = lazy(() => import("./page/Products"));
+const Cart = lazy(() => import("./page/Cart"));
+const ProductDetail = lazy(() => import("./page/ProductDetail"));
+const Notfound = lazy(() => import("./page/Notfound"));
+const Footer = lazy(() => import("./Components/layout/Footer"));
+const Test = lazy(() => import("./page/Test"));
 
 // 🎨 Better Suspense Fallback Components
 const PageLoader = () => (
@@ -82,7 +74,6 @@ const ProgressLoader = () => (
 export const App = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar always loaded (বা lazy চাইলে) */}
       <Suspense fallback={<div className="h-16 bg-white border-b animate-pulse" />}>
         <Navbar />
       </Suspense>
@@ -103,7 +94,6 @@ export const App = () => {
         </Suspense>
       </main>
 
-      {/* Footer always loaded */}
       <Suspense fallback={<div className="h-20 bg-gray-100 animate-pulse" />}>
         <Footer />
       </Suspense>
